@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public float jumpForce = 25f;
+    public float jumpForce = 6f;
     public float runningSpeed = 1.5f;
     private Rigidbody2D rigidBody;
     public static PlayerController instance;
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
+                //Debug.Log("Mouse clicked");
                 Jump();
             }
             animator.SetBool("isGrounded", IsGrounded());
@@ -40,8 +41,11 @@ public class PlayerController : MonoBehaviour {
 
     void Jump()
     {
+//        Debug.Log("jump inovkeed");
+//        Debug.Log(IsGrounded());
         if (IsGrounded())
         {
+            Debug.Log("jump force");
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -72,5 +76,17 @@ public class PlayerController : MonoBehaviour {
     {
         GameManager.instance.GameOver();
         animator.SetBool("isAlive", false);
+
+        if(PlayerPrefs.GetFloat("highscore",0) < this.GetDistance())
+        {
+            PlayerPrefs.SetFloat("highscore", this.GetDistance());
+        }
+    }
+
+    public float GetDistance()
+    {
+        float travelDistance = Vector2.Distance(new Vector2(startingPosition.x, 0),
+                                                new Vector2(this.transform.position.x, 0));
+        return travelDistance;
     }
 }

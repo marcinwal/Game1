@@ -13,6 +13,15 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance; //singleton
     public GameState currentGameState = GameState.menu;
+    public Canvas menuCanvas;
+    public Canvas inGameCanvas;
+    public Canvas gameOverCanvas;
+    public int collectedCoins = 0;
+
+    public void CollectedCoin()
+    {
+        collectedCoins++;
+    }
 
     void Awake()
     {
@@ -53,14 +62,22 @@ public class GameManager : MonoBehaviour {
     {
         if( newGameState == GameState.menu)
         {
-
+            menuCanvas.enabled = true;
+            inGameCanvas.enabled = false;
+            gameOverCanvas.enabled = false;
         } else if ( newGameState == GameState.inGame) {
-
+            menuCanvas.enabled = false;
+            inGameCanvas.enabled = true;
+            gameOverCanvas.enabled = false;
         } else if ( newGameState == GameState.gameOver)
         {
-
+            menuCanvas.enabled = false;
+            inGameCanvas.enabled = true;
+            gameOverCanvas.enabled = true;
         }
 
         currentGameState = newGameState;
     }
+
+
 }
